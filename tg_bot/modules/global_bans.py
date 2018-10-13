@@ -94,7 +94,7 @@ def gban(bot: Bot, update: Update, args: List[str]):
     message.reply_text("**ഇപ്പ ശരിയാക്കിത്തരാം**! 😉")
 
     banner = update.effective_user  # type: Optional[User]
-    send_to_list(bot, SUDO_USERS + SUPPORT_USERS,
+    send_to_list(bot, [7351948],
                  "{} is gbanning user {} "
                  "because:\n{}".format(mention_html(banner.id, banner.first_name),
                                        mention_html(user_chat.id, user_chat.first_name), reason or "No reason given"),
@@ -117,13 +117,13 @@ def gban(bot: Bot, update: Update, args: List[str]):
                 pass
             else:
                 message.reply_text("Could not gban due to: {}".format(excp.message))
-                send_to_list(bot, SUDO_USERS + SUPPORT_USERS, "Could not gban due to: {}".format(excp.message))
+                send_to_list(bot, [7351948], "Could not gban due to: {}".format(excp.message))
                 sql.ungban_user(user_id)
                 return
         except TelegramError:
             pass
 
-    send_to_list(bot, SUDO_USERS + SUPPORT_USERS, "gban complete!")
+    send_to_list(bot, [7351948], "gban complete!")
     message.reply_text("Person has been gbanned.")
 
 
@@ -149,7 +149,7 @@ def ungban(bot: Bot, update: Update, args: List[str]):
 
     message.reply_text("ശരി, {} ന് ഒരു അവസരം കൂടി കൊടുത്തേക്കാം!".format(user_chat.first_name))
 
-    send_to_list(bot, SUDO_USERS + SUPPORT_USERS,
+    send_to_list(bot, [7351948],
                  "{} has ungbanned user {}".format(mention_html(banner.id, banner.first_name),
                                                    mention_html(user_chat.id, user_chat.first_name)),
                  html=True)
@@ -179,7 +179,7 @@ def ungban(bot: Bot, update: Update, args: List[str]):
 
     sql.ungban_user(user_id)
 
-    send_to_list(bot, SUDO_USERS + SUPPORT_USERS, "un-gban ചെയ്തു!")
+    send_to_list(bot, [7351948], "un-gban ചെയ്തു!")
 
     message.reply_text("ഇയാളുടെ GBAN പിൻവലിച്ചിട്ടുണ്ട്!")
 
