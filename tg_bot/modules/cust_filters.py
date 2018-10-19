@@ -152,6 +152,7 @@ def reply_filter(bot: Bot, update: Update):
     # my custom thing
     if message.reply_to_message:
         message = message.reply_to_message
+    ad_filter = ""
     # my custom thing
 
     chat_filters = sql.get_chat_triggers(chat.id)
@@ -181,7 +182,7 @@ def reply_filter(bot: Bot, update: Update):
                     should_preview_disabled = False
 
                 try:
-                    message.reply_text(filt.reply, parse_mode=ParseMode.MARKDOWN,
+                    message.reply_text(ad_filter + "\n" + filt.reply, parse_mode=ParseMode.MARKDOWN,
                                        disable_web_page_preview=should_preview_disabled,
                                        reply_markup=keyboard)
                 except BadRequest as excp:
@@ -201,7 +202,7 @@ def reply_filter(bot: Bot, update: Update):
 
             else:
                 # LEGACY - all new filters will have has_markdown set to True.
-                message.reply_text(filt.reply)
+                message.reply_text(ad_filter + "\n" + filt.reply)
             break
 
 
