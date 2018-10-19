@@ -20,19 +20,16 @@ from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
 Hi {}, my name is {}! I'm a group manager bot maintained by [this wonderful person](tg://user?id={}).
-I'm built in python3, using the python-telegram-bot library, and am fully [opensource](https://github.com/PaulSonOfLars/tgbot) you can find what makes me tick \
-[here](github.com/SpEcHiDe/PSonOfLars_Marie)!
 
-You can find the list of available commands with /help.
+This world is a selfish world, where people think only about themselves, 
+and do not consider the GreaterGood of the society. 
+There [might come a time](https://telegra.ph/file/9a49e0875a3ea6645c51b.mp4), when 
+people would value real things instead of being possessed by the ego of mortal gains. 
+But, sadly this is not the time for that. Quitting this world, in the hope that, the 
+GreaterGood might be restored sooner or later in this world, and 
+people would shed the darkness to pave way for the light that should come. Thank you, and Goodbye. 
 
-Using standard [Marie](http://telegram.dog/BanhammerMarie_bot) is always gonna be easier.
-Perks:
-- latest features
-- it's free
-- biggest list of users for any /info commands
-- the database will always be correctly formatted
-- bugs will always be fixed ASAP
-- no need to maintain anything yourself
+Ref: https://t.me/tgkeralatech/11574
 
 Also, no support can be given for any [clones](https://telegram.dog/MidukkiBot); source might be changed and that's not [my](https://telegram.dog/PaulSonOfLars) problem.
 **Keep in mind that any changes you DO do to the source have to be on github, as per the license.**
