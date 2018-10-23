@@ -10,6 +10,11 @@ from tg_bot.modules.disable import DisableAbleCommandHandler
 from telegraph import Telegraph, upload_file
 
 @run_async
+def media_telegraph(bot: Bot, update: Update):
+    msg = update.effective_message # type: Optional[Message]
+
+
+@run_async
 def post_telegraph(bot: Bot, update: Update, args: List[str]):
     short_name = "Created By @MidukkiBot 😬"
     msg = update.effective_message # type: Optional[Message]
@@ -28,7 +33,9 @@ def post_telegraph(bot: Bot, update: Update, args: List[str]):
 
 
 __help__ = """- /tele.gra.ph - as reply to a long message
+- /telegraph - as a reply to a media less than 5MiB
 """
 __mod_name__ = "Telegra.ph"
 
 dispatcher.add_handler(DisableAbleCommandHandler("tele.gra.ph", post_telegraph, pass_args=True))
+dispatcher.add_handler(DisableAbleCommandHandler("telegraph", media_telegraph, filters=Filters.video | Filters.photo))
