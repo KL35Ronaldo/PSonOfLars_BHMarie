@@ -178,7 +178,7 @@ def reply_filter(bot: Bot, update: Update):
                 keyboard = InlineKeyboardMarkup(keyb)
 
                 should_preview_disabled = True
-                if "telegra.ph" in filt.reply:
+                if "telegra.ph" in filt.reply or "youtu.be" in filt.reply:
                     should_preview_disabled = False
 
                 try:
