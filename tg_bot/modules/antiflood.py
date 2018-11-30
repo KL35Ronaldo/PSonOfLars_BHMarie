@@ -34,21 +34,21 @@ def check_flood(bot: Bot, update: Update) -> str:
         return ""
 
     try:
-        chat.kick_member(user.id)
+        bot.restrict_chat_member(chat.id, user.id, can_send_messages=False)
         msg.reply_text("ഫ്ലഡ് ചെയ്യുന്നോ... നിങ്ങൾക്കായി ഒരു കണ്ടം ഒരുക്കിയിട്ടുണ്ട്...   ഒന്ന് ഓടിയിട്ട് വരൂ...")
 
         return "<b>{}:</b>" \
-               "\n#BANNED" \
+               "\n#mutED" \
                "\n<b>User:</b> {}" \
                "\nFlooded the group.".format(html.escape(chat.title),
                                              mention_html(user.id, user.first_name))
 
     except BadRequest:
-        msg.reply_text("I can't kick people here, give me permissions first! Until then, I'll disable antiflood.")
+        msg.reply_text("I can't mute people here, give me permissions first! Until then, I'll disable antiflood.")
         sql.set_flood(chat.id, 0)
         return "<b>{}:</b>" \
                "\n#INFO" \
-               "\nDon't have kick permissions, so automatically disabled antiflood.".format(chat.title)
+               "\nDon't have mute permissions, so automatically disabled antiflood.".format(chat.title)
 
 
 @run_async
