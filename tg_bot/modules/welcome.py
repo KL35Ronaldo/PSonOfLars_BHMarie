@@ -33,7 +33,7 @@ ENUM_FUNC_MAP = {
 # do not async
 def send(update, message, keyboard, backup_message):
     try:
-        msg = update.effective_message.reply_text(message, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
+        msg = update.effective_message.reply_text(message, parse_mode=ParseMode.HTML, reply_markup=keyboard)
     except IndexError:
         msg = update.effective_message.reply_text(markdown_parser(backup_message +
                                                                   "\nNote: the current message was "
@@ -154,7 +154,7 @@ def new_member(bot: Bot, update: Update):
                     else:
                         fullname = first_name
                     count = chat.get_members_count()
-                    mention = mention_markdown(new_mem.id, escape_markdown(first_name))
+                    mention = mention_html(new_mem.id, escape_markdown(first_name))
                     if new_mem.username:
                         username = "@" + escape_markdown(new_mem.username)
                     else:
@@ -216,7 +216,7 @@ def left_member(bot: Bot, update: Update):
                 else:
                     fullname = first_name
                 count = chat.get_members_count()
-                mention = mention_markdown(left_mem.id, first_name)
+                mention = mention_html(left_mem.id, first_name)
                 if left_mem.username:
                     username = "@" + escape_markdown(left_mem.username)
                 else:
