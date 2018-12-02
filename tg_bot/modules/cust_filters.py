@@ -163,15 +163,17 @@ def reply_filter(bot: Bot, update: Update):
         if re.search(pattern, to_match, flags=re.IGNORECASE):
             filt = sql.get_filter(chat.id, keyword)
             buttons = sql.get_buttons(chat.id, filt.keyword)
-            if len(buttons) > 0:
-                keyb = build_keyboard(buttons)
-                keyboard = InlineKeyboardMarkup(keyb)
             if filt.is_sticker:
                 message.reply_sticker(filt.reply)
             elif filt.is_document:
                 message.reply_document(filt.reply)
             elif filt.is_image:
-                message.reply_photo(filt.reply, reply_markup=keyboard)
+                if len(buttons) > 0:
+                    keyb = build_keyboard(buttons)
+                    keyboard = InlineKeyboardMarkup(keyb)
+                    message.reply_photo(filt.reply, reply_markup=keyboard)
+                else:
+                    message.reply_photo(filt.reply)
             elif filt.is_audio:
                 message.reply_audio(filt.reply)
             elif filt.is_voice:
