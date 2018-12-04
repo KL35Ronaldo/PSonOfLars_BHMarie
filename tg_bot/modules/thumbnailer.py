@@ -16,7 +16,6 @@ def generate_thumb_nail(bot: Bot, update: Update):
     msg = update.effective_message # type: Optional[Message]
     from_user_id = update.effective_chat.id # type: Optional[Chat]
     if int(from_user_id) in SUDO_USERS + SUPPORT_USERS:
-        LOGGER.info(msg)
         # received photo
         file_id = msg.photo[-1].file_id
         newFile = bot.get_file(file_id)
@@ -24,7 +23,9 @@ def generate_thumb_nail(bot: Bot, update: Update):
         # download photo
         list_im = ["Image1.jpg", "Image2.jpg"]
         imgs    = [ Image.open(i) for i in list_im ]
-        min_shape = sorted([(numpy.sum(i.size), i.size) for i in imgs])[0][1]
+        inm_aesph = sorted([(numpy.sum(i.size), i.size) for i in imgs])
+        LOGGER.info(inm_aesph)
+        min_shape = inm_aesph[1][1]
         imgs_comb = numpy.hstack(numpy.asarray(i.resize(min_shape)) for i in imgs)
         imgs_comb = Image.fromarray(imgs_comb)
         # combine: https://stackoverflow.com/a/30228789/4723940
@@ -34,7 +35,7 @@ def generate_thumb_nail(bot: Bot, update: Update):
         # cleanup
         os.remove("Image1.jpg")
     else:
-        LOGGER.info("no")
+        bot.send_message(from_user_id, text="Only admins are authorized to access this module.", reply_to_message_id=msg.message_id)
 
 
 __help__ = """Send a photo to Generate ThumbNail
