@@ -7,4 +7,6 @@ psycopg2-binary
 feedparser
 py_translator
 telegraph
+pillow
+numpy
 
