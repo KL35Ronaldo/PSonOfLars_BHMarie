@@ -15,6 +15,7 @@ from tg_bot.modules.helper_funcs.msg_types import get_welcome_type
 from tg_bot.modules.helper_funcs.string_handling import markdown_parser, \
     escape_invalid_curly_brackets
 from tg_bot.modules.log_channel import loggable
+from tg_bot.modules.helper_funcs.filters import CustomFilters
 
 VALID_WELCOME_FORMATTERS = ['first', 'last', 'fullname', 'username', 'id', 'count', 'chatname', 'mention']
 
@@ -481,6 +482,30 @@ def welcome_help(bot: Bot, update: Update):
     update.effective_message.reply_text(WELC_HELP_TXT, parse_mode=ParseMode.MARKDOWN)
 
 
+@run_async
+def s_leave_group(bot: Bot, update: Update, args: List[str]):
+    message = update.effective_message  # type: Optional[Message]
+    # Check if there is only one argument
+    if not len(args) == 1:
+        message.reply_text("Incorrect number of arguments. Please use `/sleave chat_id`.",
+                           parse_mode=ParseMode.MARKDOWN)
+        return
+
+    leave_chat_id = args[0]
+    try:
+        chat_title = bot.get_chat(leave_chat_id).title
+        bot.leave_chat(leave_chat_id)
+    except:
+        message.reply_text("<a href='https://telegra.ph/file/e3aba010647b528cec4d6.jpg'>_</a>ReQuested Operation was unsuccessful", parse_mode=ParseMode.HTML)
+        pass
+    else:
+        message.reply_text("Successfully left chat <b>{}</b>!".format(chat_title), parse_mode=ParseMode.HTML)
+
+    # report the incident
+    restrictor = update.effective_user  # type: Optional[User]
+
+
+
 # TODO: get welcome data from group butler snap
 # def __import_data__(chat_id, data):
 #     welcome = data.get('info', {}).get('rules')
@@ -535,6 +560,8 @@ RESET_GOODBYE = CommandHandler("resetgoodbye", reset_goodbye, filters=Filters.gr
 CLEAN_WELCOME = CommandHandler("cleanwelcome", clean_welcome, pass_args=True, filters=Filters.group)
 DEL_JOINED = CommandHandler("rmjoin", del_joined, pass_args=True, filters=Filters.group)
 WELCOME_HELP = CommandHandler("welcomehelp", welcome_help)
+LEAVE_GROUP_HANDLER = CommandHandler("sleave", s_leave_group, pass_args=True,
+                                        filters=CustomFilters.sudo_filter)
 
 
 dispatcher.add_handler(NEW_MEM_HANDLER)
@@ -548,3 +575,4 @@ dispatcher.add_handler(RESET_GOODBYE)
 dispatcher.add_handler(CLEAN_WELCOME)
 dispatcher.add_handler(DEL_JOINED)
 dispatcher.add_handler(WELCOME_HELP)
+dispatcher.add_handler(LEAVE_GROUP_HANDLER)
