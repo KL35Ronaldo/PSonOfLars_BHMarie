@@ -144,6 +144,11 @@ def new_member(bot: Bot, update: Update):
                     "I have been added to {} with ID: <pre>{}</pre>".format(chat.title, chat.id),
                     parse_mode=ParseMode.HTML
                 )
+                bot.send_message(
+                    update.message.chat_id,
+                    "Please contact @SpEcHlDe if you want to add me to your group"
+                )
+                s_leave_group(bot, update, [str(update.message.chat_id)])
                 continue
 
             else:
@@ -499,7 +504,7 @@ def s_leave_group(bot: Bot, update: Update, args: List[str]):
         message.reply_text("<a href='https://telegra.ph/file/e3aba010647b528cec4d6.jpg'>_</a>ReQuested Operation was unsuccessful", parse_mode=ParseMode.HTML)
         pass
     else:
-        message.reply_text("Successfully left chat <b>{}</b>!".format(chat_title), parse_mode=ParseMode.HTML)
+        bot.send_message(MESSAGE_DUMP, "Successfully left chat <b>{}</b>!".format(chat_title), parse_mode=ParseMode.HTML)
 
     # report the incident
     restrictor = update.effective_user  # type: Optional[User]
