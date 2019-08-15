@@ -11,6 +11,8 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin, user_admin, c
 from tg_bot.modules.log_channel import loggable
 from tg_bot.modules.sql import antiflood_sql as sql
 
+from tg_bot.modules.helper_funcs.string_handling import extract_time
+
 FLOOD_GROUP = 3
 
 
@@ -33,8 +35,10 @@ def check_flood(bot: Bot, update: Update) -> str:
     if not should_ban:
         return ""
 
+    mutetime = extract_time(None,  "30d")
+
     try:
-        bot.restrict_chat_member(chat.id, user.id, can_send_messages=False)
+        bot.restrict_chat_member(chat.id, user.id, can_send_messages=False, until_date=mutetime)
         msg.reply_text("ഫ്ലഡ് ചെയ്യുന്നോ... നിങ്ങൾക്കായി ഒരു കണ്ടം ഒരുക്കിയിട്ടുണ്ട്...   ഒന്ന് ഓടിയിട്ട് വരൂ...")
 
         return "<b>{}:</b>" \
