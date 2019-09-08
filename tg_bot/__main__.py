@@ -460,11 +460,21 @@ def process_update(self, update):
         return
 
     now = datetime.datetime.utcnow()
-    cnt = CHATS_CNT.get(update.effective_chat.id, 0)
 
-    t = CHATS_TIME.get(update.effective_chat.id, datetime.datetime(1970, 1, 1))
+    # this is a "very" rare update
+    # aHR0cHM6Ly90Lm1lL1NwRWNIbERlLzM5Nw==
+    di = None
+    if update.effective_chat is not None:
+        di = update.effective_chat.id
+    else:
+        # temprary, for deebug purposes
+        self.logger.debug(update)
+
+    cnt = CHATS_CNT.get(di, 0)
+
+    t = CHATS_TIME.get(di, datetime.datetime(1970, 1, 1))
     if t and now > t + datetime.timedelta(0, 1):
-        CHATS_TIME[update.effective_chat.id] = now
+        CHATS_TIME[di] = now
         cnt = 0
     else:
         cnt += 1
@@ -472,7 +482,7 @@ def process_update(self, update):
     if cnt > 10:
         return
 
-    CHATS_CNT[update.effective_chat.id] = cnt
+    CHATS_CNT[di] = cnt
     for group in self.groups:
         try:
             for handler in (x for x in self.handlers[group] if x.check_update(update)):
