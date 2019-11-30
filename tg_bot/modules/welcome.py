@@ -33,7 +33,9 @@ ENUM_FUNC_MAP = {
 
 
 def escape_html(word):
-    return escape(word)
+    # return escape(word)
+    return word
+
 
 # do not async
 def send(update, message, keyboard, backup_message):
@@ -201,23 +203,22 @@ def new_member(bot: Bot, update: Update):
                         reply_markup=keyboard,
                         reply_to_message_id=update.effective_message.message_id
                     )
-                    return
                 # else, move on
-
-                sent = send(update, res, keyboard,
+                else:
+                    sent = send(update, res, keyboard,
                             sql.DEFAULT_WELCOME.format(first=first_name))  # type: Optional[Message]
 
             delete_join(bot, update)
 
-        prev_welc = sql.get_clean_pref(chat.id)
-        if prev_welc:
-            try:
-                bot.delete_message(chat.id, prev_welc)
-            except BadRequest as excp:
-                pass
+    prev_welc = sql.get_clean_pref(chat.id)
 
-            if sent:
-                sql.set_clean_welcome(chat.id, sent.message_id)
+    if prev_welc:
+        try:
+            bot.delete_message(chat.id, prev_welc)
+        except BadRequest as excp:
+            pass
+        if sent:
+            sql.set_clean_welcome(chat.id, sent.message_id)
 
 
 @run_async
