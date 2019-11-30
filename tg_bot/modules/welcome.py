@@ -155,11 +155,6 @@ def new_member(bot: Bot, update: Update):
                 s_leave_group(bot, update, [str(update.message.chat_id)])
                 continue
 
-            # Give the owner a special welcome
-            elif new_mem.id == OWNER_ID:
-                update.effective_message.reply_text("Master is in the houseeee, let's get this party started!")
-                continue
-
             else:
                 first_name = new_mem.first_name or "PersonWithNoName"  # edge case of empty name - occurs for some bugs.
 
