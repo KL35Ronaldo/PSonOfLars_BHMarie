@@ -136,9 +136,9 @@ def new_member(bot: Bot, update: Update):
     chat = update.effective_chat  # type: Optional[Chat]
 
     should_welc, cust_welcome, welc_type, custom_welcome_caption = sql.get_welc_pref(chat.id)
+    sent = None
 
     if should_welc:
-        sent = None
         new_members = update.effective_message.new_chat_members
         for new_mem in new_members:
             # Don't welcome yourself
