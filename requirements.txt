@@ -5,7 +5,7 @@ sqlalchemy
 python-telegram-bot==11.1.0
 psycopg2-binary
 feedparser
-py_translator
+googletrans
 telegraph
 pillow
 numpy
