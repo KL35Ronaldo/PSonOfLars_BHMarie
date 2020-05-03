@@ -17,6 +17,14 @@ announcements.
 
 Alternatively, [find me on telegram](https://t.me/SonOfLars)! (Keep all support questions in the support chat, where more people can help you.)
 
+
+## IMPORTANT NOTICE:
+
+This project is no longer under active maintenance. Occasional bug fixes may be released, but no new features are scheduled to be added.
+Users of [Marie](https://t.me/BanhammerMarie_bot) are encouraged to migrate to [PyroGramBot](https://t.me/OwneRoBot), which
+is the improved version of this project, written in PyroGram, with the intention to avoid various BOT API hiccups, and to protect group chats from (user)bots, floods and even lifeless losers.
+
+
 ## Starting the bot.
 
 Once you've setup your database and your configuration (see below) is complete, simply run:
