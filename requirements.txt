@@ -9,4 +9,5 @@ py_translator
 telegraph
 pillow
 numpy
+uuid==1.30
 
