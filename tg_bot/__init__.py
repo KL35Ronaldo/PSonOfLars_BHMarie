@@ -114,7 +114,7 @@ else:
 
     try:
         BMERNU_SCUT_SRELFTI = int(Config.BMERNU_SCUT_SRELFTI)
-    except ValueError:
+    except (ValueError, TypeError):
         BMERNU_SCUT_SRELFTI = None
 
 
