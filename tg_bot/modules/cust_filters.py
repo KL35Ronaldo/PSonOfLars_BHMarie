@@ -237,20 +237,20 @@ def reply_filter(bot: Bot, update: Update):
             if filt.is_sticker:
                 message.reply_sticker(filt.reply)
             elif filt.is_document:
-                message.reply_document(filt.reply, caption=media_caption)
+                message.reply_document(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN)
             elif filt.is_image:
                 if len(buttons) > 0:
                     keyb = build_keyboard(buttons)
                     keyboard = InlineKeyboardMarkup(keyb)
-                    message.reply_photo(filt.reply, caption=media_caption, reply_markup=keyboard)
+                    message.reply_photo(filt.reply, caption=media_caption, reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
                 else:
-                    message.reply_photo(filt.reply, caption=media_caption)
+                    message.reply_photo(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN)
             elif filt.is_audio:
-                message.reply_audio(filt.reply, caption=media_caption)
+                message.reply_audio(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN)
             elif filt.is_voice:
-                message.reply_voice(filt.reply, caption=media_caption)
+                message.reply_voice(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN)
             elif filt.is_video:
-                message.reply_video(filt.reply, caption=media_caption)
+                message.reply_video(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN)
             elif filt.has_markdown:
                 keyb = build_keyboard(buttons)
                 keyboard = InlineKeyboardMarkup(keyb)
