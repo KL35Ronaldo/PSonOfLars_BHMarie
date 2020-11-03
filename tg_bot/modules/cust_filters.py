@@ -164,6 +164,10 @@ def filters(bot: Bot, update: Update):
         msg.reply_text("You didn't specify what to reply with!")
         return
 
+    # print(media_caption)
+    # print(buttons)
+    # print(content)
+
     # Add the filter
     # Note: perhaps handlers can be removed somehow using sql.get_chat_filters
     for handler in dispatcher.handlers.get(HANDLER_GROUP, []):
