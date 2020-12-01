@@ -26,6 +26,10 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
 
+    admin_user = chat.get_member(user.id)
+    if not admin_user.can_restrict_members:
+        return
+
     user_id, reason = extract_user_and_text(message, args)
 
     if not user_id:
@@ -91,6 +95,10 @@ def temp_ban(bot: Bot, update: Update, args: List[str]) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
+
+    admin_user = chat.get_member(user.id)
+    if not admin_user.can_restrict_members:
+        return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -174,6 +182,10 @@ def kick(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
 
+    admin_user = chat.get_member(user.id)
+    if not admin_user.can_restrict_members:
+        return
+
     user_id, reason = extract_user_and_text(message, args)
 
     if not user_id:
@@ -244,6 +256,10 @@ def unban(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     chat = update.effective_chat  # type: Optional[Chat]
 
+    admin_user = chat.get_member(user.id)
+    if not admin_user.can_restrict_members:
+        return
+
     user_id, reason = extract_user_and_text(message, args)
 
     if not user_id:
@@ -285,7 +301,7 @@ def unban(bot: Bot, update: Update, args: List[str]) -> str:
 __help__ = """
  - /kickme: ആജ്ഞ പുറപ്പെടുവിച്ച ഉപയോക്താവിനെ കുത്തിവയ്ക്കുക
 
-*Admin only:*
+*Admin [with can_restrict_members permission] only:*
  - /ban <userhandle>: ഒരു ഉപയോക്താവിനെ നിരോധിക്കുക. (via handle, or reply)
  - /tban <userhandle> x(m/h/d): x സമയം ഒരു ഉപയോക്താവിനെ നിരോധിക്കുക. (via handle, or reply). m = minutes, h = hours, d = days.
  - /unban <userhandle>: ഒരു ഉപയോക്താവിനെ ഒഴിവാക്കി. (via handle, or reply)
