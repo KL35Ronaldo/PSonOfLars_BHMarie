@@ -10,7 +10,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, User
 from tg_bot import dispatcher, BAN_STICKER, LOGGER
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.chat_status import bot_admin, user_admin, is_user_ban_protected, can_restrict, \
-    is_user_admin, is_user_in_chat
+    is_user_admin, is_user_in_chat, _TELE_GRAM_ID_S
 from tg_bot.modules.helper_funcs.extraction import extract_user_and_text
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.log_channel import loggable
@@ -26,9 +26,10 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
 
-    admin_user = chat.get_member(user.id)
-    if not admin_user.can_restrict_members:
-        return
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not admin_user.can_restrict_members:
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -96,9 +97,10 @@ def temp_ban(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
 
-    admin_user = chat.get_member(user.id)
-    if not admin_user.can_restrict_members:
-        return
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not admin_user.can_restrict_members:
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -182,9 +184,10 @@ def kick(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     message = update.effective_message  # type: Optional[Message]
 
-    admin_user = chat.get_member(user.id)
-    if not admin_user.can_restrict_members:
-        return
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not admin_user.can_restrict_members:
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
@@ -256,9 +259,10 @@ def unban(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     chat = update.effective_chat  # type: Optional[Chat]
 
-    admin_user = chat.get_member(user.id)
-    if not admin_user.can_restrict_members:
-        return
+    if user.id not in _TELE_GRAM_ID_S:
+        admin_user = chat.get_member(user.id)
+        if not admin_user.can_restrict_members:
+            return
 
     user_id, reason = extract_user_and_text(message, args)
 
