@@ -28,7 +28,10 @@ def ban(bot: Bot, update: Update, args: List[str]) -> str:
 
     if user.id not in _TELE_GRAM_ID_S:
         admin_user = chat.get_member(user.id)
-        if not admin_user.can_restrict_members:
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
             return
 
     user_id, reason = extract_user_and_text(message, args)
@@ -99,7 +102,10 @@ def temp_ban(bot: Bot, update: Update, args: List[str]) -> str:
 
     if user.id not in _TELE_GRAM_ID_S:
         admin_user = chat.get_member(user.id)
-        if not admin_user.can_restrict_members:
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
             return
 
     user_id, reason = extract_user_and_text(message, args)
@@ -186,7 +192,10 @@ def kick(bot: Bot, update: Update, args: List[str]) -> str:
 
     if user.id not in _TELE_GRAM_ID_S:
         admin_user = chat.get_member(user.id)
-        if not admin_user.can_restrict_members:
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
             return
 
     user_id, reason = extract_user_and_text(message, args)
@@ -261,7 +270,10 @@ def unban(bot: Bot, update: Update, args: List[str]) -> str:
 
     if user.id not in _TELE_GRAM_ID_S:
         admin_user = chat.get_member(user.id)
-        if not admin_user.can_restrict_members:
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
             return
 
     user_id, reason = extract_user_and_text(message, args)

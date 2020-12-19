@@ -104,7 +104,10 @@ def button(bot: Bot, update: Update) -> str:
         user_id = match.group(1)
         chat = update.effective_chat  # type: Optional[Chat]
         admin_user = chat.get_member(int(user.id))
-        if not admin_user.can_restrict_members:
+        if not (
+            admin_user.can_restrict_members or
+            admin_user.status == "creator"
+        ):
             query.answer(text="ചീള് പിള്ളേർസ് ADMIN അല്ല എന്നിട്ട് REMOVE WARN അമർത്താൻ വന്നിരിക്കുന്നു", show_alert=True)
             return ""
         res = sql.remove_warn(user_id, chat.id)
