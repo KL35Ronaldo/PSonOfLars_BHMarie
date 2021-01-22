@@ -1,22 +1,27 @@
 {
   "name": "Marie",
   "description": "Telegram's sassiest group manager. Modular Telegram group management bot!",
+  "logo": "https://telegra.ph/file/1925c7a2f601539ccde7a.png",
   "keywords": [
     "telegram",
     "best",
     "group",
     "manager",
-    "3"
+    "3",
+    "plugin",
+    "modular",
+    "productivity"
   ],
   "repository": "https://github.com/PaulSonOfLars/tgbot",
+  "website": "https://t.me/iamidiotareyoutoo",
+  "success_url": "https://t.me/iamidiotareyoutoo/2",
   "env": {
     "ENV": {
       "description": "Setting this to ANYTHING will enable env variables. But, you need to understand the code to know what to set here!",
       "value": "ANYTHING"
     },
     "TOKEN": {
-      "description": "Your bot token, as a string.",
-      "value": ""
+      "description": "Your bot token, as a string."
     },
     "OWNER_ID": {
       "description": "An integer of consisting of your owner ID",
@@ -31,12 +36,10 @@
       "value": "ANYTHING"
     },
     "URL": {
-      "description": "The Heroku App URL similar to https://<appname>.herokuapp.com/",
-      "value": ""
+      "description": "The Heroku App URL similar to https://<appname>.herokuapp.com/"
     },
     "MESSAGE_DUMP": {
       "description": "optional: a chat where your replied saved messages are stored, to stop people deleting their old",
-      "value": "",
       "required": false
     },
     "SUDO_USERS": {
@@ -89,5 +92,13 @@
         "version": "12"
       }
     }
-  ]
+  ],
+  "stack": "heroku-18",
+  "buildpacks": [],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
 }
