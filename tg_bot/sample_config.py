@@ -36,6 +36,9 @@ class Config(object):
     ALLOW_EXCL = False  # Allow ! commands as well as /
     BMERNU_SCUT_SRELFTI = None
 
+    START_MESSAGE = "https://t.me/c/1235155926/33801"
+    START_BUTTONS = None
+
 class Production(Config):
     LOGGER = False
 

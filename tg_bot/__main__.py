@@ -9,9 +9,9 @@ from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, Cha
 from telegram.ext import CommandHandler, Filters, MessageHandler, CallbackQueryHandler
 from telegram.ext.dispatcher import run_async, DispatcherHandlerStop, Dispatcher
 from telegram.utils.helpers import escape_markdown
-
+from tg_bot.modules.helper_funcs.string_handling import button_markdown_parser
 from tg_bot import dispatcher, updater, TOKEN, WEBHOOK, OWNER_ID, DONATION_LINK, CERT_PATH, PORT, URL, LOGGER, \
-    ALLOW_EXCL
+    ALLOW_EXCL, START_MESSAGE, START_BUTTONS
 # needed to dynamically load modules
 # NOTE: Module order is not guaranteed, specify that in the config file!
 from tg_bot.modules import ALL_MODULES
@@ -113,6 +113,17 @@ def test(bot: Bot, update: Update):
 
 @run_async
 def start(bot: Bot, update: Update, args: List[str]):
+    keyboard = None
+    if START_BUTTONS:
+        keyb = []
+        _, buttons = button_markdown_parser(START_BUTTONS)
+        for b_name, url, same_line in buttons:
+            ik = InlineKeyboardButton(b_name, url=url)
+            if same_line and keyb:
+                keyb[-1].append(ik)
+            else:
+                keyb.append([ik])
+        keyboard = InlineKeyboardMarkup(keyb)
     if update.effective_chat.type == "private":
         if len(args) >= 1:
             if args[0].lower() == "help":
@@ -131,13 +142,17 @@ def start(bot: Bot, update: Update, args: List[str]):
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
         else:
-            first_name = update.effective_user.first_name
             update.effective_message.reply_text(
-                # PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(bot.first_name), OWNER_ID),
-                "no one gonna help you 🤣🤣🤣🤣",
-                parse_mode=ParseMode.MARKDOWN)
+                START_MESSAGE,
+                parse_mode=ParseMode.MARKDOWN,
+                reply_markup=keyboard
+            )
     else:
-        update.effective_message.reply_text("no one gonna help you 🤣🤣🤣🤣")
+        update.effective_message.reply_text(
+            START_MESSAGE,
+            parse_mode=ParseMode.MARKDOWN,
+            reply_markup=keyboard
+        )
 
 
 # for test purposes
@@ -403,10 +418,11 @@ def migrate_chats(bot: Bot, update: Update):
 @run_async
 def kcfrsct_fnc(bot: Bot, update: Update):
     query = update.callback_query
-    user = update.effective_user
-    _match = re.match(r"rsct_(.*)_33801", query.data)
+    bot.answer_callback_query(query.id)
+    # user = update.effective_user
+    # _match = re.match(r"rsct_(.*)_33801", query.data)
     # ensure no spinny white circle
-    if _match:
+    """if _match:
         try:
             from tg_bot.modules.sql.cust_filters_sql import get_btn_with_di
             _soqka = get_btn_with_di(int(_match.group(1)))
@@ -418,6 +434,7 @@ def kcfrsct_fnc(bot: Bot, update: Update):
         except Exception as e:
             print(e)
             bot.answer_callback_query(query.id)
+    """
 
 
 def main():
@@ -441,9 +458,9 @@ def main():
     dispatcher.add_handler(settings_callback_handler)
     dispatcher.add_handler(migrate_handler)
     dispatcher.add_handler(donate_handler)
-    dispatcher.add_handler(
+    """dispatcher.add_handler(
         CallbackQueryHandler(kcfrsct_fnc, pattern=r"")
-    )
+    )"""
 
     # dispatcher.add_error_handler(error_callback)
 

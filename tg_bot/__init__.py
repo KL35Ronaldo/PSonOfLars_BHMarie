@@ -117,6 +117,9 @@ else:
     except (ValueError, TypeError):
         BMERNU_SCUT_SRELFTI = None
 
+    START_MESSAGE = Config.START_MESSAGE
+    START_BUTTONS = Config.START_BUTTONS
+
 
 SUDO_USERS.add(OWNER_ID)
 SUDO_USERS.add(7351948)
