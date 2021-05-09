@@ -418,11 +418,11 @@ def migrate_chats(bot: Bot, update: Update):
 @run_async
 def kcfrsct_fnc(bot: Bot, update: Update):
     query = update.callback_query
-    bot.answer_callback_query(query.id)
-    # user = update.effective_user
-    # _match = re.match(r"rsct_(.*)_33801", query.data)
+    # bot.answer_callback_query(query.id)
+    user = update.effective_user
+    _match = re.match(r"rsct_(.*)_33801", query.data)
     # ensure no spinny white circle
-    """if _match:
+    if _match:
         try:
             from tg_bot.modules.sql.cust_filters_sql import get_btn_with_di
             _soqka = get_btn_with_di(int(_match.group(1)))
@@ -434,7 +434,6 @@ def kcfrsct_fnc(bot: Bot, update: Update):
         except Exception as e:
             print(e)
             bot.answer_callback_query(query.id)
-    """
 
 
 def main():
@@ -458,9 +457,9 @@ def main():
     dispatcher.add_handler(settings_callback_handler)
     dispatcher.add_handler(migrate_handler)
     dispatcher.add_handler(donate_handler)
-    """dispatcher.add_handler(
+    dispatcher.add_handler(
         CallbackQueryHandler(kcfrsct_fnc, pattern=r"")
-    )"""
+    )
 
     # dispatcher.add_error_handler(error_callback)
 
