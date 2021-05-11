@@ -1,7 +1,7 @@
 import threading
 
 from sqlalchemy import Column, String, UnicodeText, Boolean, Integer, distinct, func
-
+from sqlalchemy import and_
 from tg_bot.modules.sql import BASE, SESSION
 
 
@@ -92,8 +92,6 @@ def get_all_filters():
 
 def add_filter(chat_id, keyword, reply, is_sticker=False, is_document=False, is_image=False, is_audio=False,
                is_voice=False, is_video=False, buttons=None, caption=None, has_caption=False):
-    global CHAT_FILTERS
-
     if buttons is None:
         buttons = []
 
@@ -113,10 +111,6 @@ def add_filter(chat_id, keyword, reply, is_sticker=False, is_document=False, is_
             filt.caption = caption
             filt.has_caption = has_caption
 
-        if keyword not in CHAT_FILTERS.get(str(chat_id), []):
-            CHAT_FILTERS[str(chat_id)] = sorted(CHAT_FILTERS.get(str(chat_id), []) + [keyword],
-                                                key=lambda x: (-len(x), x))
-
         SESSION.add(filt)
         SESSION.commit()
 
@@ -125,13 +119,9 @@ def add_filter(chat_id, keyword, reply, is_sticker=False, is_document=False, is_
 
 
 def remove_filter(chat_id, keyword):
-    global CHAT_FILTERS
     with CUST_FILT_LOCK:
         filt = SESSION.query(CustomFilters).get((str(chat_id), keyword))
         if filt:
-            if keyword in CHAT_FILTERS.get(str(chat_id), []):  # Sanity check
-                CHAT_FILTERS.get(str(chat_id), []).remove(keyword)
-
             with BUTTON_LOCK:
                 prev_buttons = SESSION.query(Buttons).filter(Buttons.chat_id == str(chat_id),
                                                              Buttons.keyword == keyword).all()
@@ -146,8 +136,21 @@ def remove_filter(chat_id, keyword):
         return False
 
 
-def get_chat_triggers(chat_id):
-    return CHAT_FILTERS.get(str(chat_id), set())
+def get_chat_triggers(chat_id, usr_k_w):
+    filt = SESSION.query(CustomFilters).filter(
+        and_(
+            CustomFilters.keyword.like(usr_k_w),
+            CustomFilters.chat_id == str(chat_id)
+        )
+    ).limit(1).offset(0).all()
+    tlif = CHAT_FILTERS.get(str(chat_id), set())
+    # print("AwACAgQAAx0CS3YfYQACIOFgbYk0c-MPg2-h9r4jJCizTZFEEQACTwsAAvyBaFP95oT7U9NwHR4E")
+    return filt
+
+
+def get_all_chat_triggers(chat_id):
+    # print("AwACAgQAAx0CS3YfYQACIOFgbYk0c-MPg2-h9r4jJCizTZFEEQACTwsAAvyBaFP95oT7U9NwHR4E")
+    return get_chat_filters(chat_id)
 
 
 def get_chat_filters(chat_id):
@@ -203,20 +206,8 @@ def num_chats():
 
 
 def __load_chat_filters():
-    global CHAT_FILTERS
-    try:
-        chats = SESSION.query(CustomFilters.chat_id).distinct().all()
-        for (chat_id,) in chats:  # remove tuple by ( ,)
-            CHAT_FILTERS[chat_id] = []
-
-        all_filters = SESSION.query(CustomFilters).all()
-        for x in all_filters:
-            CHAT_FILTERS[x.chat_id] += [x.keyword]
-
-        CHAT_FILTERS = {x: sorted(set(y), key=lambda i: (-len(i), i)) for x, y in CHAT_FILTERS.items()}
-
-    finally:
-        SESSION.close()
+    # print("AwACAgQAAx0CS3YfYQACIOFgbYk0c-MPg2-h9r4jJCizTZFEEQACTwsAAvyBaFP95oT7U9NwHR4E")
+    pass
 
 
 def migrate_chat(old_chat_id, new_chat_id):
@@ -225,8 +216,9 @@ def migrate_chat(old_chat_id, new_chat_id):
         for filt in chat_filters:
             filt.chat_id = str(new_chat_id)
         SESSION.commit()
-        CHAT_FILTERS[str(new_chat_id)] = CHAT_FILTERS[str(old_chat_id)]
-        del CHAT_FILTERS[str(old_chat_id)]
+        # CHAT_FILTERS[str(new_chat_id)] = CHAT_FILTERS[str(old_chat_id)]
+        # print("AwACAgQAAx0CS3YfYQACIOFgbYk0c-MPg2-h9r4jJCizTZFEEQACTwsAAvyBaFP95oT7U9NwHR4E")
+        # del CHAT_FILTERS[str(old_chat_id)]
 
         with BUTTON_LOCK:
             chat_buttons = SESSION.query(Buttons).filter(Buttons.chat_id == str(old_chat_id)).all()
@@ -234,5 +226,5 @@ def migrate_chat(old_chat_id, new_chat_id):
                 btn.chat_id = str(new_chat_id)
             SESSION.commit()
 
-
-__load_chat_filters()
+# -_-
+# print("AwACAgQAAx0CS3YfYQACIOFgbYk0c-MPg2-h9r4jJCizTZFEEQACTwsAAvyBaFP95oT7U9NwHR4E")

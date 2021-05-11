@@ -45,14 +45,14 @@ def list_handlers(bot: Bot, update: Update):
     total_count_f_fliters = sql.num_filters_per_chat(chat_id)
     filter_list += f"**Filter Count**: {total_count_f_fliters}\n"
 
-    all_handlers = sql.get_chat_triggers(chat_id)
+    all_handlers = sql.get_all_chat_triggers(chat_id)
 
     if not all_handlers:
         update.effective_message.reply_text("No filters in {}!".format(chat_name))
         return
 
-    for keyword in all_handlers:
-        entry = " - {}\n".format(escape_markdown(keyword))
+    for key_word in all_handlers:
+        entry = " - {}\n".format(escape_markdown(key_word.keyword))
         if len(entry) + len(filter_list) > telegram.MAX_MESSAGE_LENGTH:
             update.effective_message.reply_text(filter_list, parse_mode=telegram.ParseMode.MARKDOWN)
             filter_list = entry
@@ -207,14 +207,14 @@ def stop_filter(bot: Bot, update: Update):
     if len(args) < 2:
         return
 
-    chat_filters = sql.get_chat_triggers(chat_id)
+    chat_filters = sql.get_all_chat_triggers(chat_id)
 
     if not chat_filters:
         update.effective_message.reply_text("No filters are active here!")
         return
 
     for keyword in chat_filters:
-        if keyword == args[1]:
+        if keyword.keyword == args[1]:
             sql.remove_filter(chat_id, args[1])
             update.effective_message.reply_text("Yep, I'll stop replying to that in *{}*.".format(chat_name), parse_mode=telegram.ParseMode.MARKDOWN)
             raise DispatcherHandlerStop
@@ -236,11 +236,10 @@ def reply_filter(bot: Bot, update: Update):
     ad_filter = ""
     # my custom thing
 
-    chat_filters = sql.get_chat_triggers(chat.id)
+    chat_filters = sql.get_chat_triggers(chat.id, to_match)
     for keyword in chat_filters:
-        pattern = r"( |^|[^\w])" + re.escape(keyword) + r"( |$|[^\w])"
-        if re.search(pattern, to_match, flags=re.IGNORECASE):
-            filt = sql.get_filter(chat.id, keyword)
+        if True:
+            filt = keyword
             buttons = sql.get_buttons(chat.id, filt.keyword)
             media_caption = filt.caption if filt.caption is not None else ""
             keyboard = None
@@ -300,7 +299,7 @@ def __migrate__(old_chat_id, new_chat_id):
 
 
 def __chat_settings__(chat_id, user_id):
-    cust_filters = sql.get_chat_triggers(chat_id)
+    cust_filters = sql.get_all_chat_triggers(chat_id)
     return "There are `{}` custom filters here.".format(len(cust_filters))
 
 
