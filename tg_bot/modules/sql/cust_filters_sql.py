@@ -1,8 +1,9 @@
 import threading
 
 from sqlalchemy import Column, String, UnicodeText, Boolean, Integer, distinct, func
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 from tg_bot.modules.sql import BASE, SESSION
+from tg_bot.modules.helper_funcs.search_bleck_megick import search_bleck_megick
 
 
 class CustomFilters(BASE):
@@ -41,7 +42,7 @@ class CustomFilters(BASE):
 
 
     def __repr__(self):
-        return "<Permissions for %s>" % self.chat_id
+        return "<CustomFilters for %s>" % self.chat_id
 
     def __eq__(self, other):
         return bool(isinstance(other, CustomFilters)
@@ -136,10 +137,17 @@ def remove_filter(chat_id, keyword):
         return False
 
 
-def get_chat_triggers(chat_id, usr_k_w):
+def get_chat_triggers(chat_id, search_query):
+    key, word = search_bleck_megick(search_query)
+    keyword = key.split(word)
+    keywords = []
+    for drowyek in keyword:
+        keywords.append(
+            CustomFilters.keyword.like(drowyek)
+        )
     filt = SESSION.query(CustomFilters).filter(
         and_(
-            CustomFilters.keyword.like(usr_k_w),
+            or_(*keywords),
             CustomFilters.chat_id == str(chat_id)
         )
     ).limit(1).offset(0).all()

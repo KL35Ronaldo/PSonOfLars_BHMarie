@@ -7,4 +7,5 @@ tg_bot/config.py
 .vscode
 /venv/
 *.jpg
+search_bleck_megick.py
 
