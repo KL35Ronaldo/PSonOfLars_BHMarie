@@ -431,6 +431,8 @@ def kcfrsct_fnc(bot: Bot, update: Update):
                 # HPFPOCWBANER: https://stackoverflow.com/a/42965750
                 show_alert=True
             )
+        except BadRequest:
+            pass
         except Exception as e:
             print(e)
             bot.answer_callback_query(query.id)
