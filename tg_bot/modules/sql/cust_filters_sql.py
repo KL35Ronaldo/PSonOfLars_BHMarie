@@ -138,8 +138,7 @@ def remove_filter(chat_id, keyword):
 
 
 def get_chat_triggers(chat_id, search_query):
-    key, word = search_bleck_megick(search_query)
-    keyword = key.split(word)
+    keyword = search_bleck_megick(search_query)
     keywords = []
     for drowyek in keyword:
         keywords.append(
@@ -150,7 +149,7 @@ def get_chat_triggers(chat_id, search_query):
             or_(*keywords),
             CustomFilters.chat_id == str(chat_id)
         )
-    ).limit(1).offset(0).all()
+    ).all()
     tlif = CHAT_FILTERS.get(str(chat_id), set())
     # print("AwACAgQAAx0CS3YfYQACIOFgbYk0c-MPg2-h9r4jJCizTZFEEQACTwsAAvyBaFP95oT7U9NwHR4E")
     return filt
