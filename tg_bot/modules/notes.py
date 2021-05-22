@@ -232,6 +232,8 @@ def list_notes(bot: Bot, update: Update):
             chat_name = chat.title
             msg = "*Notes in {}:*\n".format(chat_name)
 
+    pre_check = msg
+
     note_list = sql.get_all_chat_notes(chat_id)
 
     for note in note_list:
@@ -241,10 +243,12 @@ def list_notes(bot: Bot, update: Update):
             msg = ""
         msg += note_name
 
-    if msg == "*Notes in chat:*\n":
+    if msg == pre_check:
         update.effective_message.reply_text("No notes in this chat!")
 
     elif len(msg) != 0:
+        msg += "\n\n**You can retrieve these notes by using /get notename, or #notename**"
+        msg += "\nIt is recommended to use Telegram X, to use this Telegram Bot."
         update.effective_message.reply_text(msg, parse_mode=ParseMode.MARKDOWN)
 
 
