@@ -3,7 +3,10 @@ import threading
 from sqlalchemy import Column, String, UnicodeText, Boolean, Integer, distinct, func
 from sqlalchemy import and_, or_
 from tg_bot.modules.sql import BASE, SESSION
-from tg_bot.modules.helper_funcs.search_bleck_megick import search_bleck_megick
+try:
+    from tg_bot.modules.helper_funcs.search_bleck_megick import search_bleck_megick
+except ImportError:
+    search_bleck_megick = lambda a: [a]
 
 
 class CustomFilters(BASE):
