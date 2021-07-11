@@ -1,6 +1,6 @@
 import re
 import threading
-
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import Column, String, UnicodeText, Boolean, Integer, distinct, func
 from tg_bot.modules.sql import BASE, SESSION
 
@@ -79,6 +79,8 @@ def get_btn_with_di(ntb_gtid):
         return SESSION.query(Buttons).filter(
             Buttons.id == ntb_gtid
         ).one()
+    except NoResultFound:
+        return False
     finally:
         SESSION.close()
 
