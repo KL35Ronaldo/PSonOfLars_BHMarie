@@ -1,7 +1,9 @@
+import re
 import threading
 
 from sqlalchemy import Column, String, UnicodeText, Boolean, Integer, distinct, func
 from sqlalchemy import and_, or_
+from sqlalchemy.sql import text
 from tg_bot.modules.sql import BASE, SESSION
 try:
     from tg_bot.modules.helper_funcs.search_bleck_megick import search_bleck_megick
@@ -153,8 +155,6 @@ def get_chat_triggers(chat_id, search_query):
             CustomFilters.chat_id == str(chat_id)
         )
     ).all()
-    tlif = CHAT_FILTERS.get(str(chat_id), set())
-    # print("AwACAgQAAx0CS3YfYQACIOFgbYk0c-MPg2-h9r4jJCizTZFEEQACTwsAAvyBaFP95oT7U9NwHR4E")
     return filt
 
 
