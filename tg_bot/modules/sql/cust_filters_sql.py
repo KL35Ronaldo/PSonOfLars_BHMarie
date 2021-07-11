@@ -2,13 +2,7 @@ import re
 import threading
 
 from sqlalchemy import Column, String, UnicodeText, Boolean, Integer, distinct, func
-from sqlalchemy import and_, or_
-from sqlalchemy.sql import text
 from tg_bot.modules.sql import BASE, SESSION
-try:
-    from tg_bot.modules.helper_funcs.search_bleck_megick import search_bleck_megick
-except ImportError:
-    search_bleck_megick = lambda a: [a]
 
 
 class CustomFilters(BASE):
@@ -140,22 +134,6 @@ def remove_filter(chat_id, keyword):
 
         SESSION.close()
         return False
-
-
-def get_chat_triggers(chat_id, search_query):
-    keyword = search_bleck_megick(search_query)
-    keywords = []
-    for drowyek in keyword:
-        keywords.append(
-            CustomFilters.keyword.like(drowyek)
-        )
-    filt = SESSION.query(CustomFilters).filter(
-        and_(
-            or_(*keywords),
-            CustomFilters.chat_id == str(chat_id)
-        )
-    ).all()
-    return filt
 
 
 def get_all_chat_triggers(chat_id):
