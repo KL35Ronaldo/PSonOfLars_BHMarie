@@ -418,6 +418,7 @@ def migrate_chats(bot: Bot, update: Update):
 @run_async
 def kcfrsct_fnc(bot: Bot, update: Update):
     query = update.callback_query
+    print(update)
     bot.answer_callback_query(query.id)
     """user = update.effective_user
     _match = re.match(r"rsct_(.*)_33801", query.data)
@@ -461,7 +462,7 @@ def main():
     dispatcher.add_handler(migrate_handler)
     dispatcher.add_handler(donate_handler)
     dispatcher.add_handler(
-        CallbackQueryHandler(kcfrsct_fnc, pattern=r"")
+        CallbackQueryHandler(kcfrsct_fnc, pattern=r"rsct_(.*)_33801")
     )
 
     # dispatcher.add_error_handler(error_callback)
