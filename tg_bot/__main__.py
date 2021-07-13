@@ -418,8 +418,8 @@ def migrate_chats(bot: Bot, update: Update):
 @run_async
 def kcfrsct_fnc(bot: Bot, update: Update):
     query = update.callback_query
-    # bot.answer_callback_query(query.id)
-    user = update.effective_user
+    bot.answer_callback_query(query.id)
+    """user = update.effective_user
     _match = re.match(r"rsct_(.*)_33801", query.data)
     # ensure no spinny white circle
     if _match:
@@ -436,7 +436,7 @@ def kcfrsct_fnc(bot: Bot, update: Update):
             pass
         except Exception as e:
             print(e)
-            bot.answer_callback_query(query.id)
+            bot.answer_callback_query(query.id)"""
 
 
 def main():
